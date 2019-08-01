@@ -1,0 +1,23 @@
+#!/bin/bash
+
+git pull --all &>/dev/null 
+
+set -e 
+## Looking for Dockerfile 
+if [ ! -f Dockerfile ]; then 
+    echo -e "\e[33mERROR :: Dockerfile not Found\e[0m"
+    exit 1
+fi 
+
+IMAGE=$(head -1 Dockerfile | grep '^#' | sed -e 's/^#//')
+if [ -z "$IMAGE" ]; then 
+    echo -e "\e[33mERROR :: ImageName Not Found\e[0m"
+    exit 1
+fi 
+
+docker build -t $IMAGE . 
+
+if [ "$1" == "-p" -o "$1" == "--push" ]; then 
+    echo -e "\e[32m\t\t============ PUSHING DOCKER IMAGE ============ \e[0m"
+    docker push $IMAGE 
+fi 
