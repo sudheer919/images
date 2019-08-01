@@ -14,5 +14,5 @@ RUN         ./configure --prefix=$HTTPD_PREFIX && \
 COPY        httpd-start.sh /httpd-start.sh
 RUN         chmod +x /httpd-start.sh 
 CMD         /httpd-start.sh 
-
+RUN         yum install updates
  
